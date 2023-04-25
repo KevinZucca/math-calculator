@@ -1,8 +1,9 @@
 <script>
+
 export default {
   data() {
     return {
-        
+        darkModeOn : false,
   }
 },
 
@@ -17,19 +18,43 @@ methods: {
 
     sum() {
         let screen = document.querySelector("#screen");
-        let calc = parseInt(screen.innerHTML);
-        console.log(calc);
+        let screenContent = screen.innerHTML;
+        let expression = eval(screenContent.slice(0, -1));
+        screen.innerHTML = expression;   
     },
 
     clickButton(event) {
         let screen = document.querySelector("#screen");
-
+        let moonButton = document.querySelector("#moon");
         screen.innerHTML += event.target.innerHTML;
         if(event.target.innerHTML == "C"){
             this.cancel();
         } else if( event.target.innerHTML == "="){
             this.sum();
+        } else if(event.target.innerHTML == "DARK"){
+            this.darkMode();
         }
+    },
+
+    darkMode(){
+        this.darkModeOn = !this.darkModeOn;
+
+        let screen = document.querySelector("#screen");
+        screen.innerHTML = "";
+
+        let body = document.querySelector("body");
+        let calculator = document.querySelector("#calculator");
+
+        if(this.darkModeOn){
+           body.classList.add ("body-dark-mode");
+           calculator.style.backgroundColor = ("white");
+           screen.style.backgroundColor = ("rgba(0, 0, 0, 0.89)");
+        } else {
+           body.classList.remove ("body-dark-mode");
+           calculator.style.backgroundColor = ("rgba(0, 0, 0, 0.89)");
+           screen.style.backgroundColor = ("white");
+        }
+        
     }
 },
 
@@ -50,13 +75,13 @@ mounted() {
         </div>
 
         <div class="cell grey-button" @click="cancel()">C</div>
-        <div class="cell grey-button">+ / -</div>
+        <div class="cell grey-button">DARK</div>
         <div class="cell grey-button">%</div>
-        <div class="cell orange-button"></div>
+        <div class="cell orange-button">/</div>
         <div class="cell number">7</div>
         <div class="cell number">8</div>
         <div class="cell number">9</div>
-        <div class="cell orange-button">x</div>
+        <div class="cell orange-button">*</div>
         <div class="cell number">4</div>
         <div class="cell number">5</div>
         <div class="cell number">6</div>
